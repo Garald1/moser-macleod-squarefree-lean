@@ -4,10 +4,10 @@
 
 Let
 
-$$
-Q(x)=\#\{n\in\mathbb N:1\le n\le x,\ n\text{ squarefree}\},\qquad
+```math
+Q(x)=\left|\{n\in\mathbb N:1\le n\le x,\ n\text{ squarefree}\}\right|,\qquad
 R(x)=Q(x)-\frac{6}{\pi^2}x.
-$$
+```
 
 The formal result is
 
@@ -19,9 +19,9 @@ theorem MoserMacLeod.abs_R_lt_sqrt (x : ℝ) (hx : 0 < x) :
 Moser and MacLeod state this for `x ≥ 1`. Lean proves it for every `x > 0`.
 If `0 < x < 1`, then `⌊x⌋₊=0`, hence `Q(x)=0`, and
 
-$$
+```math
 |R(x)|=\frac6{\pi^2}x<\sqrt{x}.
-$$
+```
 
 Natural-number variables are written `N`, real variables `x`. Thus Lean's
 `squarefreeCountNat N` is $Q(N)$, while `squarefreeCount x` is
@@ -52,40 +52,40 @@ native evaluator.
 
 For `n > 0`, Möbius inversion gives
 
-$$
+```math
 \sum_{d^2\mid n}\mu(d)=
 \begin{cases}1,&n\text{ squarefree},\\0,&\text{otherwise}.
 \end{cases}
-$$
+```
 
 Summing over `1 ≤ n ≤ N` and interchanging finite sums yields
 
-$$
+```math
 Q(N)=\sum_{d\le\sqrt N}\mu(d)
        \left\lfloor\frac{N}{d^2}\right\rfloor. \tag{A}
-$$
+```
 
 Writing
 
-$$
+```math
 \theta_{N,d}=\frac{N}{d^2}-\left\lfloor\frac{N}{d^2}\right\rfloor,
 \qquad 0\le\theta_{N,d}<1,
-$$
+```
 
 and using
 
-$$
+```math
 \sum_{d=1}^{\infty}\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}
 =\frac6{\pi^2}, \tag{B}
-$$
+```
 
 we obtain the exact decomposition corresponding to equation (2) of the paper:
 
-$$
+```math
 R(N)=-\sum_{d\le\sqrt N}\mu(d)\theta_{N,d}
 -N\left(\frac6{\pi^2}-
 \sum_{d\le\sqrt N}\frac{\mu(d)}{d^2}\right). \tag{C}
-$$
+```
 
 Lean expands the divisor bookkeeping in (A), one of the details suppressed in
 the paper.
@@ -96,25 +96,25 @@ The periodic auxiliary function of Moser--MacLeod has period 30 and values in
 `{0,1}`. Their convolution identity bounds `M(N)+1` by a squarefree count.
 The formalization combines this with the convenient elementary estimate
 
-$$
+```math
 Q(N)\le \frac34N+1
-$$
+```
 
 and a direct proof for the small values to obtain
 
-$$
+```math
 |M(N)+1|\le\frac18N+\frac34\quad(N\ge2),
 \qquad
 |M(N)|\le\frac18N+\frac74\quad(N\ge1). \tag{D}
-$$
+```
 
 For arbitrary numbers `0 ≤ θ_d ≤ 1`, separating the positive and negative
 values of `μ(d)` gives
 
-$$
+```math
 \left|\sum_{d\le m}\mu(d)\theta_d\right|
 \le \frac{Q(m)}2+\frac{|M(m)|}2. \tag{E}
-$$
+```
 
 This is the formal counterpart of the signed fractional-part estimate leading
 to equation (7) of the paper. The constants in (D) are deliberately stated as
@@ -127,9 +127,9 @@ Apply finite summation by parts to `μ(d)/d²`, using the bound for `M(d)+1`
 in (D). Lean keeps both endpoint terms and proves convergence before passing
 to the limit. The result, combined with (E), yields for natural `N ≥ 401`
 
-$$
+```math
 |R(N)|<\frac{13}{16}\sqrt N+\frac{11}{4}. \tag{F}
-$$
+```
 
 Since `N ≥ 401` implies `√N > 20`, this is strong enough, after allowing for
 movement inside a unit cell, to prove the desired strict inequality for every
@@ -139,18 +139,18 @@ real `x ≥ 401`.
 
 For `N=⌊x⌋` and `x∈[N,N+1)`, `Q(x)` is constant, so
 
-$$
+```math
 R(x)=Q(N)-\frac6{\pi^2}x
-$$
+```
 
 is affine. The proof encloses `6/π²` between `607/1000` and `609/1000`.
 For each `1 ≤ N ≤ 400`, it verifies rational endpoint inequalities sufficient
 to imply
 
-$$
+```math
 |Q(N)-\tfrac6{\pi^2}x|<\sqrt{x}
 \quad\text{throughout }[N,N+1).
-$$
+```
 
 The endpoint-to-cell passage is symbolic in `endpointOK_sound` and
 `abs_R_lt_sqrt_of_lt_401`. Thus this is 400 finite integer/rational checks,
