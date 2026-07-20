@@ -259,16 +259,12 @@ theorem floorMobius_eq_one (N : ℕ) (hN : 1 ≤ N) : floorMobius N = 1 := by
 theorem auxF_periodic (n : ℕ) : auxF (n + 30) = auxF n := by
   have h2 : (n + 30) / 2 = n / 2 + 15 := by
     rw [Nat.add_div_of_dvd_left (a := n) (by norm_num : 2 ∣ 30)]
-    norm_num
   have h3 : (n + 30) / 3 = n / 3 + 10 := by
     rw [Nat.add_div_of_dvd_left (a := n) (by norm_num : 3 ∣ 30)]
-    norm_num
   have h5 : (n + 30) / 5 = n / 5 + 6 := by
     rw [Nat.add_div_of_dvd_left (a := n) (by norm_num : 5 ∣ 30)]
-    norm_num
   have h30 : (n + 30) / 30 = n / 30 + 1 := by
     rw [Nat.add_div_of_dvd_left (a := n) (by norm_num : 30 ∣ 30)]
-    norm_num
   rw [auxF, auxF, h2, h3, h5, h30]
   push_cast
   ring
