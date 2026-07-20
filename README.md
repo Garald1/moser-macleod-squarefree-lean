@@ -23,8 +23,7 @@ dependency of the solution.)
 - [`Solution.lean`](Solution.lean) has exactly the same theorem statement and
   imports the proof.
 - [`MOSER_MACLEOD_LEAN_COMPANION.pdf`](MOSER_MACLEOD_LEAN_COMPANION.pdf) is the
-  typeset human proof, trust audit, and paper-to-Lean index. Its editable source
-  is [`MOSER_MACLEOD_LEAN_COMPANION.md`](MOSER_MACLEOD_LEAN_COMPANION.md).
+  typeset human proof, trust audit, and paper-to-Lean index. 
 - [`MoserMacLeod/Proof.lean`](MoserMacLeod/Proof.lean) contains the analytic
   argument and the public theorem.
 
@@ -46,12 +45,6 @@ rg 'native_decide|admit' --glob '*.lean'
 
 The `Challenge.lean` command succeeds with the expected warning about its
 intentional `sorry`. The default `lake build` target does not build Challenge.
-
-The typeset companion can be regenerated with Pandoc and XeLaTeX:
-
-```sh
-scripts/build-companion-pdf.sh
-```
 
 At the end of `MoserMacLeod/Proof.lean`, Lean prints the axioms of the final
 theorem. They are the standard mathlib logical axioms `propext`,
