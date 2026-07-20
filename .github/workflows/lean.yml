@@ -1,0 +1,31 @@
+name: Lean
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Fetch mathlib cache
+        run: lake exe cache get
+      - name: Build solution
+        run: lake build
+      - name: Check public MWE
+        run: lake env lean Solution.lean
+      - name: Audit forbidden proof shortcuts
+        run: |
+          if rg 'native_decide|\badmit\b' --glob '*.lean' --glob '!Challenge.lean'; then
+            echo 'Forbidden proof shortcut found.'
+            exit 1
+          fi
