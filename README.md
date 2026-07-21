@@ -60,14 +60,50 @@ theorem. They are the standard mathlib logical axioms `propext`,
 | `MoserMacLeod/FiniteTable.lean` | Small dispatcher hiding generated rows from the mathematical proof |
 | `MoserMacLeod/Infrastructure.lean` | Real-cell certificate and Mertens/weighted-sum estimates |
 | `MoserMacLeod/Proof.lean` | Abel summation, square-divisor identity, error bound, and final theorem |
+| `MoserMacLeod/SharpBound.lean` | Sharpened leading constant `13/18` for the large-`x` estimate |
 | `MoserMacLeod.lean` | Stable public import |
 | `Challenge.lean`, `Solution.lean` | Comparator-facing MWE |
 
+## Sharpened leading constant
+
+Beyond the headline `|R(x)| < √x`, the proof of `abs_R_lt_sqrt` establishes the
+coarse large-`x` estimate `|R(N)| < 13/16 · √N + 11/4`, whose leading constant
+`13/16 ≈ 0.813` already beats `1` asymptotically. `MoserMacLeod/SharpBound.lean`
+improves this to
+
+```lean
+theorem MoserMacLeod.abs_R_lt_thirteen_eighteenths_sqrt (x : ℝ) (hx : 16 ≤ x) :
+    |MoserMacLeod.R x| < 13 / 18 * Real.sqrt x + 77 / 12
+```
+
+with leading constant `13/18 ≈ 0.722`. The gain comes from sharpening the
+elementary sieve input: a squarefree integer is divisible by neither `4` **nor**
+`9`, giving `Q(N) ≤ 2/3·N + O(1)` instead of the coarser `Q(N) ≤ 3/4·N`. The
+entire tail argument is re-run generically in the two weight constants
+(`finite_tail_bound_gen`, `abs_mu_tail_le_gen`), so the original `13/16` proof
+and the finite endpoint certificate are left untouched. The sharpened theorem
+carries the same three standard axioms as the headline result.
+
+Because of the additive term, this right-hand side improves on `√x` only past an
+explicit crossover. The two sides `13/18·√x + 77/12` and `√x` meet at
+`√x = 231/10`, i.e. `x = 533.61`, and `sharp_bound_lt_sqrt` proves
+
+```lean
+theorem MoserMacLeod.sharp_bound_lt_sqrt (x : ℝ) (hx : 534 ≤ x) :
+    13 / 18 * Real.sqrt x + 77 / 12 < Real.sqrt x
+```
+
+so for `x ≥ 534` the estimate is *genuinely* below `√x`. `abs_R_add_margin_lt_sqrt`
+records the improvement quantitatively — `|R x|` sits below `√x` by the positive,
+unbounded margin `5/18·√x − 77/12` — and `abs_R_lt_sqrt_sharp` re-derives the
+headline `|R x| < √x` for `x ≥ 534` through the sharp route, with room to spare
+rather than the borderline `13/16` argument used near the `x = 401` crossover.
+
 ## Scope
 
-Only the weaker Moser--MacLeod theorem `|R(x)| < √x` is formalized here. The
-later `R(x) < √x/2` result and the Cohen--Dress/MacLeod refinements are outside
-this repository.
+Only the weaker Moser--MacLeod theorem `|R(x)| < √x` is formalized here (with the
+sharpened large-`x` constant `13/18` above). The later `R(x) < √x/2` result and
+the Cohen--Dress/MacLeod refinements are outside this repository.
 
 ## Contributing
 
